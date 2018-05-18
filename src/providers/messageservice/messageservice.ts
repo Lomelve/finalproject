@@ -10,7 +10,8 @@ import { Events } from 'ionic-angular';
 @Injectable()
 export class MessageserviceProvider {
   firemessages = firebase.database().ref('/chats');
-  contact: any;
+  contact;
+  displayName;
   allmessages= [];
   constructor(public events: Events) {
     console.log('Hello MessageserviceProvider Provider');

@@ -9,6 +9,9 @@
   <ion-navbar>
     <ion-title>message</ion-title>
   </ion-navbar>
+  <button ion-button icon-only (click)="exitChat()">
+    <ion-icon name="exit"></ion-icon>
+  </button>
 
 </ion-header>
 
@@ -16,3 +19,38 @@
 <ion-content padding>
 
 </ion-content>
+<ion-header>
+
+  <ion-navbar color="hcolor">
+    <ion-title>{{contact}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content #content>
+<div class = "chatwindow">
+  <ion-list no-lines>
+    <ion-item *ngFor = "let item of allmessages; let i = index" text-wrap>
+  
+      <div class="bubble me" *ngIf="item.sentby === contact.uid">
+        <h3>{{item.message}}  </h3>
+      </div>
+ 
+      <div class="bubble you" *ngIf="item.sentby != contact.uid">
+        <h3>{{item.message}} </h3>
+      </div>
+    </ion-item>
+  </ion-list>
+</div>
+</ion-content>
+<ion-footer ion-fixed>    
+  <ion-toolbar class="no-border" color="white">        
+    <ion-input [(ngModel)]="newmessage" placeholder="Write your message ..."></ion-input>  
+    <ion-buttons end>
+      <button ion-button (click)="addmessage()">
+        <ion-icon name="send" color="primary"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>    
+</ion-footer>

@@ -1,8 +1,8 @@
 import { MessageserviceProvider } from './../../providers/messageservice/messageservice';
-import { Component, ViewChild, NgZone } from '@angular/core';
+import { Contact } from './../../models/Contact';
+import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, Events } from 'ionic-angular';
-import * as firebase from 'Firebase';
-import { ContactPage } from '../contact/contact';
+import * as firebase from 'firebase';
 
 /**
  * Generated class for the MessagePage page.
@@ -17,35 +17,52 @@ import { ContactPage } from '../contact/contact';
   templateUrl: 'message.html',
 })
 export class MessagePage {
-  @ViewChild(Content) content: Content;
-  contact: any;
+  //contact : Contact= this.navParams.get("contact") as Contact;
+  uid = this.navParams.get("contactuid") as Contact;
+  firemessages= firebase.database().ref('/messages');
+  contact : any;
+  allmessages = []; 
   newmessage;
-  allMessages = [];
 
-
-constructor(public navCtrl: NavController, public navParams: NavParams,
-  public messageservice: MessageserviceProvider, public events: Events, public zone :NgZone) {
-    this.contact= messageservice.contact;
-    this.events.subscribe('newmessage', () => {
-      this.allMessages = [];
-      this.zone.run(() => {
-        this.allMessages = this.messageservice.allmessages;
-      })
-      
-      
-    })
-
-}
-addmessage() {
-  this.messageservice.addnewmessage(this.newmessage).then(() => {
-    this.content.scrollToBottom();
-    this.newmessage = '';
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+ public messageservice: MessageserviceProvider, public events : Events, public zone :NgZone  ) {
+  this.contact = this.messageservice.contact;
+ // this.scrollto();
+  this.events.subscribe('newmessage', () => {
+    this.allmessages = [];
+   // this.zone.run(() => {
+      this.allmessages = this.messageservice.allmessages;
+  //  })
+    
+    
   })
-}
-ionViewDidEnter() {
-  this.messageservice.getallmessages();
-}
-
-
-
+    
   }
+
+  addmessage() {
+    this.messageservice.addnewmessage(this.newmessage).then(() => {
+     // this.content.scrollToBottom();
+      this.newmessage = '';
+    })
+  }
+
+  ionViewDidEnter() {
+    this.messageservice.getallmessages();
+  }
+
+  /*scrollto() {
+    setTimeout(() => {
+      this.content.scrollToBottom();
+    }, 1000);
+  }*/
+
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad MessagePage');
+  }
+
+  exitChat() {
+  this.navCtrl.push('ContactPage');
+  }
+
+}

@@ -1,7 +1,6 @@
 import { SignupPage } from './../signup/signup';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { RoomPage } from  '../room/room';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ContactPage } from '../contact/contact';
 import { Contact } from '../../models/Contact';
@@ -29,7 +28,14 @@ export class SigninPage {
     this.authProvider.login(this.userInformation).
     then((res: any) => {
       if (!res.code)
-        this.navCtrl.setRoot('ContactPage');
+      { this.userInformation.displayName=res.displayName;
+        this.navCtrl.setRoot('ContactPage',{
+        res : res,
+        username: res.displayName
+      });
+  
+      }
+    
       else
         alert(res);
     })

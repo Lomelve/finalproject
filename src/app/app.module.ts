@@ -5,9 +5,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 
-import { RoomPage } from '../pages/room/room';
 import { AddRoomPage } from '../pages/add-room/add-room';
 import { Contacts } from '@ionic-native/contacts';
 import { HttpClientModule } from '@angular/common/http'
@@ -33,8 +31,6 @@ import { MessageserviceProvider } from '../providers/messageservice/messageservi
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    RoomPage,
     AddRoomPage,
     
     
@@ -50,8 +46,6 @@ import { MessageserviceProvider } from '../providers/messageservice/messageservi
   entryComponents: [
    
     MyApp,
-    HomePage,
-    RoomPage,
     AddRoomPage,
     
   ],
