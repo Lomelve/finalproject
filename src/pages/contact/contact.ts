@@ -28,7 +28,7 @@ export class ContactPage {
   userservice.getallusers().then((res: any) => {
     this.contacts = res;
     
-    alert(this.currentUserId);
+    //alert(this.currentUserId);
  })
   }
   ionViewDidLoad() {}
@@ -36,7 +36,7 @@ export class ContactPage {
   openChat(contact) {
     this.buddyid= contact.uid;
    // this.contactName= contact.disp
-    alert(this.buddyid);
+   // alert(this.buddyid);
     this.messageservice.addContact(contact);
     this.navCtrl.setRoot('MessagePage', {
       //contact: contact,

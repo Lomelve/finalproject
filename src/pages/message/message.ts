@@ -3,13 +3,11 @@ import { Contact } from './../../models/Contact';
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, Events } from 'ionic-angular';
 import * as firebase from 'firebase';
+import * as CryptoJS from 'crypto-js';
+import {Buffer} from 'buffer/';
+import * as crypto from 'crypto-browserify';
 
-/**
- * Generated class for the MessagePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
 
 @IonicPage()
 @Component({
@@ -23,25 +21,36 @@ export class MessagePage {
   contact : any;
   allmessages = []; 
   newmessage;
+  kmessages= [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+ constructor(public navCtrl: NavController, public navParams: NavParams,
  public messageservice: MessageserviceProvider, public events : Events, public zone :NgZone  ) {
-  this.contact = this.messageservice.contact;
- // this.scrollto();
+  this.contact = this.messageservice.contact; 
   this.events.subscribe('newmessage', () => {
     this.allmessages = [];
-   // this.zone.run(() => {
-      this.allmessages = this.messageservice.allmessages;
-  //  })
+    this.kmessages=[];
+   this.allmessages = this.messageservice.allmessages;
+    this.decrypt(this.allmessages);
+
+  })  
+  }
+
+  decrypt(mymessages){
     
+    for(var message of mymessages){
     
-  })
-    
+      let decrypted = CryptoJS.AES.decrypt(message.message, 'TheKey%%123');
+      var dec= decrypted.toString(CryptoJS.enc.Utf8);
+      this.kmessages.push(dec);
+      
+ 
+  }
+
+ 
   }
 
   addmessage() {
-    this.messageservice.addnewmessage(this.newmessage).then(() => {
-     // this.content.scrollToBottom();
+     this.messageservice.addnewmessage(this.newmessage).then(() => {
       this.newmessage = '';
     })
   }
@@ -49,13 +58,6 @@ export class MessagePage {
   ionViewDidEnter() {
     this.messageservice.getallmessages();
   }
-
-  /*scrollto() {
-    setTimeout(() => {
-      this.content.scrollToBottom();
-    }, 1000);
-  }*/
-
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MessagePage');
